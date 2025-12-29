@@ -4,10 +4,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeanceController;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+ Route::get('/', function () {
+     if (Auth::check()) {
+         return redirect()->route('seances.index');
+     }
+
+     return view('welcome');
+ });
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
