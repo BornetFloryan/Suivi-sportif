@@ -15,5 +15,4 @@ class Seance extends Model
         'note',
         'user_id',
     ];
-
 }
