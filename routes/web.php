@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
  Route::get('/', function () {
-     if (Auth::check()) {
-         return redirect()->route('seances.index');
-     }
-
-     return view('welcome');
+     return Auth::check()
+         ? redirect()->route('seances.index')
+         : view('guest-home');
  });
 
 
