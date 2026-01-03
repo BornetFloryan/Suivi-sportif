@@ -110,10 +110,18 @@ class SeanceController extends Controller
         return redirect()->route('seances.index')->with('success', 'Séance modifiée avec succès !');
     }
 
-    public function destroy(Seance $seance)
+    public function destroy($id)
     {
-        if ($seance->user_id !== Auth::id()) abort(403);
+        $seance = Seance::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (!$seance) {
+            return redirect()->route('seances.index');
+        }
+
         $seance->delete();
+
         return redirect()->route('seances.index');
     }
 
