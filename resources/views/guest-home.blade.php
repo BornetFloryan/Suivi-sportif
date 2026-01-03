@@ -12,7 +12,7 @@
 
 <header class="bg-white border-b">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="/" class="font-semibold text-lg hover:underline">
+        <a href="/" class="font-semibold text-lg">
             Suivi Sportif
         </a>
 
@@ -30,19 +30,16 @@
 </header>
 
 <main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
-    <h2 class="text-sm text-gray-500 uppercase tracking-wide">
-        Page publique
-    </h2>
 
     <section class="max-w-3xl">
         <h1 class="text-3xl font-bold">
-            Application de suivi des séances d’entraînement
+            Application de suivi sportif
         </h1>
 
         <p class="mt-4 text-gray-600">
-            Cette application permet de gérer simplement ses séances de sport.
-            L’accès aux fonctionnalités est réservé aux utilisateurs connectés.
-            Cette page présente un aperçu de l’application avant inscription.
+            Cette application permet aux utilisateurs de gérer leurs séances
+            d’entraînement et les exercices associés.
+            L’ensemble des fonctionnalités est accessible uniquement après connexion.
         </p>
 
         <div class="mt-6 flex gap-3">
@@ -62,8 +59,9 @@
         <h2 class="text-xl font-semibold mb-4">
             Exemple de séances
         </h2>
+
         <p class="text-sm text-gray-500 mb-4">
-            Aperçu fictif de séances visibles après connexion.
+            Aperçu fictif de séances et d’exercices visibles après connexion.
         </p>
 
         @php
@@ -71,17 +69,20 @@
                 [
                     'title' => 'Séance jambes',
                     'date' => '2025-03-12',
-                    'note' => 'Squats, fentes et presse.'
+                    'note' => 'Travail de force',
+                    'exercices' => ['Squats', 'Fentes', 'Presse']
                 ],
                 [
                     'title' => 'Cardio',
                     'date' => '2025-03-14',
-                    'note' => 'Course à pied 30 minutes.'
+                    'note' => 'Endurance',
+                    'exercices' => ['Course 30 min']
                 ],
                 [
                     'title' => 'Haut du corps',
                     'date' => '2025-03-16',
-                    'note' => 'Développé couché et tirage.'
+                    'note' => 'Renforcement',
+                    'exercices' => ['Développé couché', 'Tirage']
                 ],
             ];
         @endphp
@@ -94,12 +95,14 @@
                     </div>
 
                     <div class="text-sm text-gray-500 mt-1">
-                        {{ $seance['date'] }}
+                        {{ $seance['date'] }} – {{ $seance['note'] }}
                     </div>
 
-                    <p class="text-sm text-gray-600 mt-3">
-                        {{ $seance['note'] }}
-                    </p>
+                    <ul class="mt-3 text-sm text-gray-600 list-disc list-inside">
+                        @foreach($seance['exercices'] as $exercice)
+                            <li>{{ $exercice }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endforeach
         </div>
@@ -114,25 +117,26 @@
             <div class="bg-white border rounded-lg p-5">
                 <div class="font-semibold">Gestion des séances</div>
                 <p class="text-sm text-gray-600 mt-2">
-                    Création, modification et suppression de séances.
+                    Créer, modifier, consulter et supprimer des séances.
                 </p>
             </div>
 
             <div class="bg-white border rounded-lg p-5">
-                <div class="font-semibold">Données sécurisées</div>
+                <div class="font-semibold">Gestion des exercices</div>
                 <p class="text-sm text-gray-600 mt-2">
-                    Chaque utilisateur accède uniquement à ses propres données.
+                    Ajouter des exercices avec séries, répétitions et poids.
                 </p>
             </div>
 
             <div class="bg-white border rounded-lg p-5">
-                <div class="font-semibold">Interface simple</div>
+                <div class="font-semibold">Historique personnel</div>
                 <p class="text-sm text-gray-600 mt-2">
-                    Navigation claire et design cohérent.
+                    Consulter l’ensemble de ses séances passées.
                 </p>
             </div>
         </div>
     </section>
+
     <section class="border-t pt-8">
         <div class="max-w-3xl">
             <h2 class="text-xl font-semibold">
@@ -140,8 +144,8 @@
             </h2>
 
             <p class="mt-3 text-gray-600">
-                Pour créer et gérer vos propres séances, vous devez disposer d’un compte.
-                Une fois connecté, vous accédez à l’ensemble des fonctionnalités.
+                L’inscription permet d’accéder à toutes les fonctionnalités
+                de gestion des séances et des exercices.
             </p>
 
             <div class="mt-5 flex gap-3">
@@ -159,5 +163,6 @@
     </section>
 
 </main>
+
 </body>
 </html>

@@ -9,12 +9,12 @@
             {{-- Séance --}}
             <div class="mb-4">
                 <label class="block font-medium mb-1">Titre</label>
-                <input type="text" name="title" value="{{ old('title') }}" class="w-full border rounded px-3 py-2">
+                <input type="text" name="title" value="{{ old('title') }}" class="w-full border rounded px-3 py-2" required>
             </div>
 
             <div class="mb-4">
                 <label class="block font-medium mb-1">Date</label>
-                <input type="date" name="date" value="{{ old('date') }}" class="w-full border rounded px-3 py-2">
+                <input type="date" name="date" value="{{ old('date') }}" class="w-full border rounded px-3 py-2" required>
             </div>
 
             <div class="mb-6">
@@ -33,9 +33,9 @@
 
                 @foreach($exercices as $i => $exercice)
                 <div class="exercise-block mb-4 border rounded p-3">
-                    <input type="text" name="exercices[{{ $i }}][name]" value="{{ $exercice['name'] ?? '' }}" placeholder="Nom" class="w-full border rounded px-3 py-2 mb-2">
-                    <input type="number" name="exercices[{{ $i }}][sets]" value="{{ $exercice['sets'] ?? '' }}" placeholder="Séries" class="w-full border rounded px-3 py-2 mb-2">
-                    <input type="number" name="exercices[{{ $i }}][reps]" value="{{ $exercice['reps'] ?? '' }}" placeholder="Répétitions" class="w-full border rounded px-3 py-2 mb-2">
+                    <input type="text" name="exercices[{{ $i }}][name]" value="{{ $exercice['name'] ?? '' }}" placeholder="Nom" class="w-full border rounded px-3 py-2 mb-2" required>
+                    <input type="number" name="exercices[{{ $i }}][sets]" value="{{ $exercice['sets'] ?? '' }}" placeholder="Séries" class="w-full border rounded px-3 py-2 mb-2" required>
+                    <input type="number" name="exercices[{{ $i }}][reps]" value="{{ $exercice['reps'] ?? '' }}" placeholder="Répétitions" class="w-full border rounded px-3 py-2 mb-2" required>
                     <input type="number" name="exercices[{{ $i }}][weight]" value="{{ $exercice['weight'] ?? '' }}" placeholder="Poids (kg)" class="w-full border rounded px-3 py-2 mb-2">
                     <button type="button" class="remove-exercise text-red-600 text-sm">Supprimer l'exercice</button>
                 </div>
