@@ -13,8 +13,11 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @auth
-                        <x-nav-link :href="route('seances.index')" :active="request()->routeIs('seances.*')">
+                        <x-nav-link :href="route('seances.index')" :active="request()->routeIs('seances.index')">
                             {{ __('Séances') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('seances.historique')" :active="request()->routeIs('seances.historique')">
+                            {{ __('Historique') }}
                         </x-nav-link>
                     @endauth
                 </div>

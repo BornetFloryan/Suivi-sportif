@@ -8,157 +8,156 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen bg-gray-50 text-gray-900">
-<header class="border-b bg-white">
-    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <a href="/" class="flex items-center gap-3">
-            <span class="grid h-10 w-10 place-items-center rounded-xl bg-gray-900 text-white font-bold">SS</span>
-            <div class="leading-tight">
-                <div class="font-semibold">Suivi Sportif</div>
-                <div class="text-xs text-gray-500">Suivi simple de tes séances</div>
-            </div>
+<body class="min-h-screen bg-gray-100 text-gray-900">
+
+<header class="bg-white border-b">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="/" class="font-semibold text-lg hover:underline">
+            Suivi Sportif
         </a>
 
-        <nav class="flex items-center gap-2">
+        <div class="flex gap-2">
             <a href="{{ route('login') }}"
-               class="rounded-xl px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
-                Se connecter
+               class="px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
+                Connexion
             </a>
             <a href="{{ route('register') }}"
-               class="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800">
-                S’inscrire
+               class="px-4 py-2 text-sm rounded-lg bg-gray-900 text-white hover:bg-gray-800">
+                Inscription
             </a>
-        </nav>
+        </div>
     </div>
 </header>
 
-<main>
-    <section class="mx-auto max-w-6xl px-4 py-12">
-        <div class="grid items-center gap-10 md:grid-cols-2">
-            <div>
+<main class="max-w-7xl mx-auto px-6 py-10 space-y-12">
+    <h2 class="text-sm text-gray-500 uppercase tracking-wide">
+        Page publique
+    </h2>
 
-                <h1 class="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
-                    Gère tes séances.<br class="hidden md:block">
-                    Suis tes progrès.
-                </h1>
+    <section class="max-w-3xl">
+        <h1 class="text-3xl font-bold">
+            Application de suivi des séances d’entraînement
+        </h1>
 
-                <p class="mt-4 text-base text-gray-600 md:text-lg">
-                    Crée, consulte, modifie et supprime tes séances d’entraînement.
-                    Tout est sécurisé par utilisateur, avec une interface claire.
-                </p>
+        <p class="mt-4 text-gray-600">
+            Cette application permet de gérer simplement ses séances de sport.
+            L’accès aux fonctionnalités est réservé aux utilisateurs connectés.
+            Cette page présente un aperçu de l’application avant inscription.
+        </p>
 
-                <div class="mt-6 flex items-center gap-4">
-                    <a href="{{ route('register') }}"
-                       class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition
-              hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Commencer gratuitement
-                    </a>
+        <div class="mt-6 flex gap-3">
+            <a href="{{ route('register') }}"
+               class="px-5 py-3 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700">
+                Créer un compte
+            </a>
 
-                    <a href="{{ route('login') }}"
-                       class="text-sm font-medium text-gray-600 hover:text-gray-900">
-                        J’ai déjà un compte →
-                    </a>
-                </div>
-
-
-                <div class="mt-8 grid grid-cols-3 gap-3 max-w-xl">
-                    <div class="rounded-2xl border border-gray-200 bg-white p-4">
-                        <div class="text-xs text-gray-500">Fonction</div>
-                        <div class="mt-1 font-semibold">CRUD</div>
-                    </div>
-                    <div class="rounded-2xl border border-gray-200 bg-white p-4">
-                        <div class="text-xs text-gray-500">Accès</div>
-                        <div class="mt-1 font-semibold">Sécurisé</div>
-                    </div>
-                    <div class="rounded-2xl border border-gray-200 bg-white p-4">
-                        <div class="text-xs text-gray-500">Style</div>
-                        <div class="mt-1 font-semibold">Simple</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="text-sm font-semibold">Aperçu</div>
-                        <div class="text-xs text-gray-500">Exemples de séances</div>
-                    </div>
-                    <span class="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold text-green-700">
-                        Actif
-                    </span>
-                </div>
-
-                @php
-                    $demo = [
-                        ['title' => 'Haut du corps', 'meta' => '45 min • Force', 'day' => 'Lun'],
-                        ['title' => 'Cardio', 'meta' => '30 min • Endurance', 'day' => 'Mer'],
-                        ['title' => 'Jambes', 'meta' => '50 min • Force', 'day' => 'Ven'],
-                    ];
-                @endphp
-
-                <div class="mt-5 space-y-3">
-                    @foreach($demo as $s)
-                        <div class="flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                            <div>
-                                <div class="font-semibold">{{ $s['title'] }}</div>
-                                <div class="text-sm text-gray-600">{{ $s['meta'] }}</div>
-                            </div>
-                            <span class="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-600">
-                                {{ $s['day'] }}
-                            </span>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-4">
-                    <div class="text-sm font-semibold">Pourquoi c’est utile ?</div>
-                    <p class="mt-1 text-sm text-gray-600">
-                        Tu gardes un historique clair de tes entraînements, et tu peux ajuster tes séances au fil du temps.
-                    </p>
-                </div>
-            </div>
+            <a href="{{ route('login') }}"
+               class="px-5 py-3 rounded-lg border text-sm font-semibold hover:bg-gray-50">
+                Se connecter
+            </a>
         </div>
     </section>
 
-    <section class="mx-auto max-w-6xl px-4 pb-14">
+    <section>
+        <h2 class="text-xl font-semibold mb-4">
+            Exemple de séances
+        </h2>
+        <p class="text-sm text-gray-500 mb-4">
+            Aperçu fictif de séances visibles après connexion.
+        </p>
+
+        @php
+            $demoSeances = [
+                [
+                    'title' => 'Séance jambes',
+                    'date' => '2025-03-12',
+                    'note' => 'Squats, fentes et presse.'
+                ],
+                [
+                    'title' => 'Cardio',
+                    'date' => '2025-03-14',
+                    'note' => 'Course à pied 30 minutes.'
+                ],
+                [
+                    'title' => 'Haut du corps',
+                    'date' => '2025-03-16',
+                    'note' => 'Développé couché et tirage.'
+                ],
+            ];
+        @endphp
+
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            @foreach($demoSeances as $seance)
+                <div class="bg-white border rounded-lg p-5 shadow-sm">
+                    <div class="font-semibold">
+                        {{ $seance['title'] }}
+                    </div>
+
+                    <div class="text-sm text-gray-500 mt-1">
+                        {{ $seance['date'] }}
+                    </div>
+
+                    <p class="text-sm text-gray-600 mt-3">
+                        {{ $seance['note'] }}
+                    </p>
+                </div>
+            @endforeach
+        </div>
+    </section>
+
+    <section>
+        <h2 class="text-xl font-semibold mb-4">
+            Fonctionnalités principales
+        </h2>
+
         <div class="grid gap-4 md:grid-cols-3">
-            <div class="rounded-2xl border border-gray-200 bg-white p-6">
-                <h3 class="font-semibold"> CRUD des séances</h3>
-                <p class="mt-2 text-sm text-gray-600">Crée, modifie, supprime et consulte tes séances.</p>
+            <div class="bg-white border rounded-lg p-5">
+                <div class="font-semibold">Gestion des séances</div>
+                <p class="text-sm text-gray-600 mt-2">
+                    Création, modification et suppression de séances.
+                </p>
             </div>
-            <div class="rounded-2xl border border-gray-200 bg-white p-6">
-                <h3 class="font-semibold"> Par utilisateur</h3>
-                <p class="mt-2 text-sm text-gray-600">Chaque utilisateur ne voit que ses données.</p>
+
+            <div class="bg-white border rounded-lg p-5">
+                <div class="font-semibold">Données sécurisées</div>
+                <p class="text-sm text-gray-600 mt-2">
+                    Chaque utilisateur accède uniquement à ses propres données.
+                </p>
             </div>
-            <div class="rounded-2xl border border-gray-200 bg-white p-6">
-                <h3 class="font-semibold"> Simple & cohérent</h3>
-                <p class="mt-2 text-sm text-gray-600">Une interface propre, sans surcharge.</p>
+
+            <div class="bg-white border rounded-lg p-5">
+                <div class="font-semibold">Interface simple</div>
+                <p class="text-sm text-gray-600 mt-2">
+                    Navigation claire et design cohérent.
+                </p>
             </div>
         </div>
+    </section>
+    <section class="border-t pt-8">
+        <div class="max-w-3xl">
+            <h2 class="text-xl font-semibold">
+                Accéder à l’application
+            </h2>
 
-        <div class="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-gray-200 bg-white p-6">
-            <div>
-                <div class="text-lg font-bold">Prêt à commencer ?</div>
-                <div class="text-sm text-gray-600">Crée un compte et ajoute ta première séance.</div>
-            </div>
-            <div class="flex gap-3">
+            <p class="mt-3 text-gray-600">
+                Pour créer et gérer vos propres séances, vous devez disposer d’un compte.
+                Une fois connecté, vous accédez à l’ensemble des fonctionnalités.
+            </p>
+
+            <div class="mt-5 flex gap-3">
                 <a href="{{ route('register') }}"
-                   class="rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800">
-                    S’inscrire
+                   class="px-5 py-3 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800">
+                    Créer un compte
                 </a>
+
                 <a href="{{ route('login') }}"
-                   class="rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold hover:bg-gray-50">
+                   class="px-5 py-3 rounded-lg border text-sm font-semibold hover:bg-gray-50">
                     Se connecter
                 </a>
             </div>
         </div>
     </section>
-</main>
 
-<footer class="border-t bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-500">
-        © {{ date('Y') }} Suivi Sportif
-    </div>
-</footer>
+</main>
 </body>
 </html>

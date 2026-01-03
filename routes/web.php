@@ -25,12 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/seances', [SeanceController::class, 'index'])->name('seances.index');
     Route::get('/seances/create', [SeanceController::class, 'create'])->name('seances.create');
     Route::get('/seances/{seance}/edit', [SeanceController::class, 'edit'])->name('seances.edit');
+    Route::get('/seances/{seance}', [SeanceController::class, 'show'])->name('seances.show');
 
     Route::post('/seances', [SeanceController::class, 'store'])->name('seances.store');
 
     Route::patch('/seances/{seance}', [SeanceController::class, 'update'])->name('seances.update');
     Route::delete('/seances/{seance}', [SeanceController::class, 'destroy'])->name('seances.destroy');
 
+    Route::get('/historique', [SeanceController::class, 'historique'])->name('seances.historique');
 });
 
 require __DIR__.'/auth.php';
