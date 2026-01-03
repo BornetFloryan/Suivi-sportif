@@ -1,7 +1,8 @@
- <?php
+<?php
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeanceController;
+use App\Http\Controllers\ExerciceController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/seances/{seance}', [SeanceController::class, 'destroy'])->name('seances.destroy');
 
     Route::get('/historique', [SeanceController::class, 'historique'])->name('seances.historique');
-});
+
+    Route::get('/seances/{seance}', [SeanceController::class, 'show'])
+    ->name('seances.show');
+
+    Route::post('/seances/{seance}/exercices', [ExerciceController::class, 'store'])
+        ->name('exercices.store');
+
+    Route::delete('/seances/{seance}/exercices/{exercice}', [ExerciceController::class, 'destroy'])
+        ->name('exercices.destroy');
+    });
 
 require __DIR__.'/auth.php';

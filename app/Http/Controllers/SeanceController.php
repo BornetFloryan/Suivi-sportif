@@ -17,13 +17,22 @@ class SeanceController extends Controller
         return view('seances.create');
     }
 
-    public function store(Request $request){
-        Seance::create([
-            'title' => $request->input('title'),
-            'date' => $request->input('date'),
-            'note' => $request->input('note'),
+    public function store(Request $request)
+    {
+        $seance = Seance::create([
+            'title' => $request->title,
+            'date' => $request->date,
+            'note' => $request->note,
             'user_id' => Auth::id(),
         ]);
+
+        if ($request->has('exercices')) {
+            foreach ($request->exercices as $exercice) {
+                if (!empty($exercice['name'])) {
+                    $seance->exercices()->create($exercice);
+                }
+            }
+        }
 
         return redirect()->route('seances.index');
     }
@@ -36,7 +45,8 @@ class SeanceController extends Controller
         return view('seances.edit', compact('seance'));
     }
 
-    public function update(Request $request, Seance $seance){
+    public function update(Request $request, Seance $seance)
+    {
         if ($seance->user_id !== Auth::id()) {
             abort(403);
         }
@@ -47,7 +57,36 @@ class SeanceController extends Controller
             'note' => $request->input('note'),
         ]);
 
-        return redirect()->route('seances.index');
+        $exercicesInput = $request->input('exercices', []);
+
+        $ids = collect($exercicesInput)->pluck('id')->filter()->toArray();
+
+        $seance->exercices()->whereNotIn('id', $ids)->delete();
+
+        foreach ($exercicesInput as $exerciceData) {
+            if (isset($exerciceData['id'])) {
+                $exercice = $seance->exercices()->find($exerciceData['id']);
+                if ($exercice) {
+                    $exercice->update([
+                        'name'   => $exerciceData['name'],
+                        'sets'   => $exerciceData['sets'],
+                        'reps'   => $exerciceData['reps'],
+                        'weight' => $exerciceData['weight'],
+                    ]);
+                }
+            } else {
+                if (!empty($exerciceData['name'])) { // on évite les champs vides
+                    $seance->exercices()->create([
+                        'name'   => $exerciceData['name'],
+                        'sets'   => $exerciceData['sets'],
+                        'reps'   => $exerciceData['reps'],
+                        'weight' => $exerciceData['weight'],
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('seances.index')->with('success', 'Séance modifiée avec succès !');
     }
 
     public function destroy(Seance $seance){
@@ -85,6 +124,9 @@ class SeanceController extends Controller
             abort(403);
         }
 
+        $seance->load('exercices');
+
         return view('seances.show', compact('seance'));
     }
+
 }

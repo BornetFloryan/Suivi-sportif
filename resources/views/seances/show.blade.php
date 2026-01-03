@@ -19,9 +19,24 @@
 
             <hr class="my-6">
 
-            <div class="text-sm text-gray-500">
-                Les exercices associés à cette séance seront affichés ici.
-            </div>
+            <h2 class="text-xl font-semibold mb-4">Exercices</h2>
+
+            @if($seance->exercices->count() > 0)
+                <div class="space-y-3">
+                    @foreach($seance->exercices as $exercice)
+                        <div class="flex justify-between items-center border p-3 rounded">
+                            <div>
+                                <strong>{{ $exercice->name }}</strong><br>
+                                Séries: {{ $exercice->sets }}, 
+                                Répétitions: {{ $exercice->reps }}, 
+                                Poids: {{ $exercice->weight }} kg
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-gray-500">Aucun exercice ajouté pour cette séance.</p>
+            @endif
 
         </div>
 

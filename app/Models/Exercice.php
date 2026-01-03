@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Seance extends Model
+class Exercice extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'date',
-        'note',
-        'user_id',
+        'name',
+        'sets',
+        'reps',
+        'weight',
+        'seance_id',
     ];
 
-    public function exercices()
+    public function seance()
     {
-        return $this->hasMany(Exercice::class);
+        return $this->belongsTo(Seance::class);
     }
 }
