@@ -8,21 +8,41 @@ use Illuminate\Support\Facades\Auth;
 
 class SeanceController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $seances = Seance::where('user_id', Auth::id())->get();
         return view('seances.index', compact('seances'));
     }
 
-    public function create(){
-        return view('seances.create');
+    public function create(Request $request)
+    {
+        $exercices = $request->old('exercices', []);
+
+        if ($request->filled('add_exercice')) {
+            $exercices[] = ['name' => '', 'sets' => '', 'reps' => '', 'weight' => ''];
+            return redirect()->back()->withInput(['exercices' => $exercices]);
+        }
+
+        if ($request->filled('remove_exercice')) {
+            $indexToRemove = $request->input('remove_exercice');
+            unset($exercices[$indexToRemove]);
+            $exercices = array_values($exercices);
+            return redirect()->back()->withInput(['exercices' => $exercices]);
+        }
+
+        return view('seances.create', compact('exercices'));
     }
 
     public function store(Request $request)
     {
+        if ($request->filled('add_exercice') || $request->filled('remove_exercice')) {
+            return redirect()->back()->withInput();
+        }
+
         $seance = Seance::create([
             'title' => $request->title,
-            'date' => $request->date,
-            'note' => $request->note,
+            'date'  => $request->date,
+            'note'  => $request->note,
             'user_id' => Auth::id(),
         ]);
 
@@ -34,54 +54,55 @@ class SeanceController extends Controller
             }
         }
 
-        return redirect()->route('seances.index');
+        return redirect()->route('seances.index')->with('success', 'Séance créée !');
     }
 
-    public function edit(Seance $seance){
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
+    public function edit(Request $request, Seance $seance)
+    {
+        if ($seance->user_id !== Auth::id()) abort(403);
+
+        $exercices = $request->old('exercices', $seance->exercices->toArray());
+
+        if ($request->filled('add_exercice')) {
+            $exercices[] = ['name' => '', 'sets' => '', 'reps' => '', 'weight' => ''];
+            return redirect()->back()->withInput(['exercices' => $exercices]);
         }
 
-        return view('seances.edit', compact('seance'));
+        if ($request->filled('remove_exercice')) {
+            $indexToRemove = $request->input('remove_exercice');
+            unset($exercices[$indexToRemove]);
+            $exercices = array_values($exercices);
+            return redirect()->back()->withInput(['exercices' => $exercices]);
+        }
+
+        return view('seances.edit', compact('seance', 'exercices'));
     }
 
     public function update(Request $request, Seance $seance)
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
+        if ($seance->user_id !== Auth::id()) abort(403);
+
+        if ($request->filled('add_exercice') || $request->filled('remove_exercice')) {
+            return redirect()->back()->withInput();
         }
 
         $seance->update([
-            'title' => $request->input('title'),
-            'date' => $request->input('date'),
-            'note' => $request->input('note'),
+            'title' => $request->title,
+            'date'  => $request->date,
+            'note'  => $request->note,
         ]);
 
         $exercicesInput = $request->input('exercices', []);
-
         $ids = collect($exercicesInput)->pluck('id')->filter()->toArray();
-
         $seance->exercices()->whereNotIn('id', $ids)->delete();
 
         foreach ($exercicesInput as $exerciceData) {
             if (isset($exerciceData['id'])) {
                 $exercice = $seance->exercices()->find($exerciceData['id']);
-                if ($exercice) {
-                    $exercice->update([
-                        'name'   => $exerciceData['name'],
-                        'sets'   => $exerciceData['sets'],
-                        'reps'   => $exerciceData['reps'],
-                        'weight' => $exerciceData['weight'],
-                    ]);
-                }
+                if ($exercice) $exercice->update($exerciceData);
             } else {
-                if (!empty($exerciceData['name'])) { // on évite les champs vides
-                    $seance->exercices()->create([
-                        'name'   => $exerciceData['name'],
-                        'sets'   => $exerciceData['sets'],
-                        'reps'   => $exerciceData['reps'],
-                        'weight' => $exerciceData['weight'],
-                    ]);
+                if (!empty($exerciceData['name'])) {
+                    $seance->exercices()->create($exerciceData);
                 }
             }
         }
@@ -89,13 +110,10 @@ class SeanceController extends Controller
         return redirect()->route('seances.index')->with('success', 'Séance modifiée avec succès !');
     }
 
-    public function destroy(Seance $seance){
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
-        }
-
+    public function destroy(Seance $seance)
+    {
+        if ($seance->user_id !== Auth::id()) abort(403);
         $seance->delete();
-
         return redirect()->route('seances.index');
     }
 
@@ -103,16 +121,10 @@ class SeanceController extends Controller
     {
         $query = Seance::where('user_id', Auth::id());
 
-        if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filled('date')) {
-            $query->where('date', $request->date);
-        }
+        if ($request->filled('search')) $query->where('title', 'like', '%' . $request->search . '%');
+        if ($request->filled('date')) $query->where('date', $request->date);
 
         $order = $request->get('order', 'desc');
-
         $seances = $query->orderBy('date', $order)->get();
 
         return view('seances.historique', compact('seances'));
@@ -120,13 +132,8 @@ class SeanceController extends Controller
 
     public function show(Seance $seance)
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
-        }
-
+        if ($seance->user_id !== Auth::id()) abort(403);
         $seance->load('exercices');
-
         return view('seances.show', compact('seance'));
     }
-
 }
