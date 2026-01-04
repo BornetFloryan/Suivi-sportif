@@ -7,7 +7,6 @@
                 @csrf
                 @method('PATCH')
 
-                {{-- Séance --}}
                 <div class="mb-4">
                     <label class="block font-medium mb-1">Titre</label>
                     <input type="text"
@@ -38,13 +37,11 @@
                     $exercices = old('exercices', $seance->exercices->toArray());
                 @endphp
 
-                {{-- Titre --}}
                 <h2 id="exercices-title"
                     class="text-lg font-semibold mb-3 {{ count($exercices) === 0 ? 'hidden' : '' }}">
                     Exercices
                 </h2>
 
-                {{-- Exercices --}}
                 <div id="exercices-container"
                      class="{{ count($exercices) === 0 ? 'hidden' : '' }}">
 
@@ -91,14 +88,12 @@
                     @endforeach
                 </div>
 
-                {{-- Ajouter --}}
                 <button type="button"
                         id="add-exercise"
                         class="mb-6 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
                     + Ajouter un exercice
                 </button>
 
-                {{-- Submit --}}
                 <button type="submit"
                         class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                     Modifier

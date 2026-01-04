@@ -6,7 +6,6 @@
         <form method="POST" action="{{ route('seances.store') }}">
             @csrf
 
-            {{-- Séance --}}
             <div class="mb-4">
                 <label class="block font-medium mb-1">Titre</label>
                 <input type="text" name="title" value="{{ old('title') }}" class="w-full border rounded px-3 py-2" required>
