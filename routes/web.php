@@ -25,24 +25,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/seances', [SeanceController::class, 'index'])->name('seances.index');
     Route::get('/seances/create', [SeanceController::class, 'create'])->name('seances.create');
-    Route::get('/seances/{seance}/edit', [SeanceController::class, 'edit'])->name('seances.edit');
-    Route::get('/seances/{seance}', [SeanceController::class, 'show'])->name('seances.show');
-
     Route::post('/seances', [SeanceController::class, 'store'])->name('seances.store');
-
+    Route::get('/seances/{seance}/edit', [SeanceController::class, 'edit'])->name('seances.edit');
     Route::patch('/seances/{seance}', [SeanceController::class, 'update'])->name('seances.update');
     Route::delete('/seances/{seance}', [SeanceController::class, 'destroy'])->name('seances.destroy');
+    Route::get('/seances/{seance}', [SeanceController::class, 'show'])->name('seances.show');
+
+    Route::get('/exercices', [ExerciceController::class, 'index'])->name('exercices.index');
+    Route::get('/exercices/create', [ExerciceController::class, 'create'])->name('exercices.create');
+    Route::post('/exercices', [ExerciceController::class, 'store'])->name('exercices.store');
+    Route::get('/exercices/{exercice}/edit', [ExerciceController::class, 'edit'])->name('exercices.edit');
+    Route::patch('/exercices/{exercice}', [ExerciceController::class, 'update'])->name('exercices.update');
+    Route::delete('/exercices/{exercice}', [ExerciceController::class, 'destroy'])->name('exercices.destroy');
 
     Route::get('/historique', [SeanceController::class, 'historique'])->name('seances.historique');
-
-    Route::get('/seances/{seance}', [SeanceController::class, 'show'])
-    ->name('seances.show');
-
-    Route::post('/seances/{seance}/exercices', [ExerciceController::class, 'store'])
-        ->name('exercices.store');
-
-    Route::delete('/seances/{seance}/exercices/{exercice}', [ExerciceController::class, 'destroy'])
-        ->name('exercices.destroy');
     });
 
 require __DIR__.'/auth.php';

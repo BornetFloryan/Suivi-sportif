@@ -9,32 +9,70 @@ use Illuminate\Support\Facades\Auth;
 
 class ExerciceController extends Controller
 {
-    public function store(Request $request, Seance $seance)
+    public function index()
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $exercices = Exercice::whereHas('seance', function ($query) {
+            $query->where('user_id', Auth::id());
+        })->with('seance')->get();
 
-        $request->validate([
-            'name' => 'required|string',
-            'sets' => 'required|integer',
-            'reps' => 'required|integer',
-            'weight' => 'nullable|integer',
-        ]);
-
-        $seance->exercices()->create($request->all());
-
-        return redirect()->route('seances.show', $seance);
+        return view('exercices.index', compact('exercices'));
     }
 
-    public function destroy(Seance $seance, Exercice $exercice)
+    public function create()
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
+        $seances = Seance::where('user_id', Auth::id())->get();
+        return view('exercices.create', compact('seances'));
+    }
+
+    public function store(Request $request)
+    {
+        $seance = Seance::where('id', $request->seance_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        Exercice::create([
+            'name' => $request->name,
+            'sets' => $request->sets,
+            'reps' => $request->reps,
+            'weight' => $request->weight,
+            'seance_id' => $seance->id,
+        ]);
+
+        return redirect()->route('exercices.index');
+    }
+
+    public function edit(Exercice $exercice)
+    {
+        if ($exercice->seance->user_id !== Auth::id()) abort(403);
+
+        $seances = Seance::where('user_id', Auth::id())->get();
+
+        return view('exercices.edit', compact('exercice', 'seances'));
+    }
+
+    public function update(Request $request, Exercice $exercice)
+    {
+        if ($exercice->seance->user_id !== Auth::id()) abort(403);
+
+        $exercice->update($request->only('name', 'sets', 'reps', 'weight', 'seance_id'));
+
+        return redirect()->route('exercices.index');
+    }
+
+    public function destroy($id)
+    {
+        $exercice = Exercice::where('id', $id)
+            ->whereHas('seance', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->first();
+
+        if (!$exercice) {
+            return redirect()->route('exercices.index');
         }
 
         $exercice->delete();
 
-        return redirect()->route('seances.show', $seance);
+        return redirect()->route('exercices.index');
     }
 }

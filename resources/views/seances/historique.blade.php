@@ -1,7 +1,11 @@
 <x-app-layout>
-    <div class="max-w-4xl mx-auto py-8 space-y-6">
+    <div class="max-w-4xl mx-auto py-8">
 
-        <div class="bg-white shadow rounded-lg p-4">
+        <h1 class="text-2xl font-bold mb-6">
+            Historique de mes séances
+        </h1>
+
+        <div class="bg-white shadow rounded-lg p-4 mb-6">
             <form method="GET" class="flex flex-wrap gap-3">
 
                 <input type="text"
@@ -26,16 +30,13 @@
                 </select>
 
                 <button type="submit"
-                        class="px-4 py-2 bg-gray-900 text-white rounded text-sm hover:bg-gray-800">
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
                     Filtrer
                 </button>
 
             </form>
         </div>
 
-        <h1 class="text-2xl font-bold">
-            Historique de mes séances
-        </h1>
         @if($seances->isEmpty())
             <div class="bg-white shadow rounded-lg p-6 text-gray-600">
                 Aucune séance enregistrée pour le moment.
@@ -62,7 +63,7 @@
                             </div>
 
                             <a href="{{ route('seances.show', $seance->id) }}"
-                               class="text-blue-600 hover:underline text-sm">
+                               class="text-blue-600 hover:underline">
                                 Voir le détail
                             </a>
                         </li>

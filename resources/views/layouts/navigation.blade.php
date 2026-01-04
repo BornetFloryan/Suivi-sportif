@@ -16,6 +16,9 @@
                         <x-nav-link :href="route('seances.index')" :active="request()->routeIs('seances.index')">
                             {{ __('Séances') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('exercices.index')" :active="request()->routeIs('exercices.index')">
+                            {{ __('Exercices') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('seances.historique')" :active="request()->routeIs('seances.historique')">
                             {{ __('Historique') }}
                         </x-nav-link>

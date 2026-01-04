@@ -41,20 +41,13 @@ class SeanceController extends Controller
 
     public function edit(Seance $seance)
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        $seance->load('exercices');
-
+        if ($seance->user_id !== Auth::id()) abort(403);
         return view('seances.edit', compact('seance'));
     }
 
     public function update(Request $request, Seance $seance)
     {
-        if ($seance->user_id !== Auth::id()) {
-            abort(403);
-        }
+        if ($seance->user_id !== Auth::id()) abort(403);
 
         $seance->update([
             'title' => $request->title,
@@ -62,24 +55,7 @@ class SeanceController extends Controller
             'note'  => $request->note,
         ]);
 
-        $ids = collect($request->exercices ?? [])
-            ->pluck('id')
-            ->filter()
-            ->toArray();
-
-        $seance->exercices()->whereNotIn('id', $ids)->delete();
-
-        foreach ($request->exercices ?? [] as $exercice) {
-            if (isset($exercice['id'])) {
-                $seance->exercices()
-                    ->where('id', $exercice['id'])
-                    ->update($exercice);
-            } else if (!empty($exercice['name'])) {
-                $seance->exercices()->create($exercice);
-            }
-        }
-
-        return redirect()->route('seances.index');
+        return redirect()->route('seances.show', $seance->id);
     }
 
     public function destroy($id)
