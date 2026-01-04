@@ -55,7 +55,7 @@ class SeanceController extends Controller
             'note'  => $request->note,
         ]);
 
-        return redirect()->route('seances.show', $seance->id);
+        return redirect()->route('seances.index', $seance->id);
     }
 
     public function destroy($id)
